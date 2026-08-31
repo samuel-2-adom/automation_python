@@ -24,5 +24,4 @@ def rename(source_path,dest_path):
                 shutil.move(source_path,dest_path)
                 logger.info(f"Path Renamed To ... :[{dest_path}]")
     except Exception as e:
-        logger.error(f"Exception - {e}")
         print(f"An Exception occured : [{e}]")

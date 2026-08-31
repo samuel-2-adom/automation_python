@@ -23,8 +23,4 @@ def trash(path):
 
 if __name__=="__main__":
     #trash(source)
-        
-        
-    
-    
-    
+    pass

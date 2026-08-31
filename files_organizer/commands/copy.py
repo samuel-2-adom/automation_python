@@ -31,9 +31,9 @@ def copy(feat=None,source_f=None,dest_f=None,source_dir=None,dest_dir=None):
             
     except Exception as e:
         print()
-        logger.error(f"Exception - {e}")
         print(f"An Exception occured : [{e}]")
 
 if __name__=="__main__":
     #copy("dir",None,None,source,destination)
     #copy("file",source,destination)
+    pass

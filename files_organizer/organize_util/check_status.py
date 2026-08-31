@@ -20,7 +20,6 @@ def check_f_status(source_f=None,dest_f=None):
             logger.error("Failed to get File Path....")
             raise Exception("File does not Exist...")
     except Exception as e:
-        logger.error(f"Exception - {e}")
         print(f"An Exception Occured : {e}")
 
 def check_d_status(source_dir=None,dest_dir=None):
@@ -42,7 +41,6 @@ def check_d_status(source_dir=None,dest_dir=None):
             raise Exception("Directory does not Exist...")
 
     except Exception as e:
-        logger.error(f"Exception - {e}")
         print(f"An Exception Occured : {e}")
 
 def check_fd_status(source_path):
@@ -64,5 +62,4 @@ def check_fd_status(source_path):
             raise Exception("File/Directory Does Not Exist...")
             
     except Exception as e:
-        logger.error(f"Exception - {e}")
         print(f"An Exception Occured : {e}")
