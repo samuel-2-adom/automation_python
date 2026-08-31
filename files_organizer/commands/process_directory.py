@@ -1,6 +1,12 @@
 from pathlib import Path
 from organize_util import parser
 from organize_util import formatter
+import platform
+import os
+
+def clear_screen():
+    command = 'cls' if platform.system() == 'Windows' else 'clear'
+    os.system(command)
 
 
 def process_directory(directory):
@@ -69,6 +75,34 @@ def process_directory(directory):
 
         print(f"Renamed: {old_path.name} -> {new_name}")
 
+def process_directory_main():
+    while True:
+        clear_screen()
+
+        user_input = input("""
+[0] Exit Parser
+[1] Parse Dir(Series(Season/Episode))
+
+    OPT Input : """)
+        print()
+
+        if user_input not in ['0','1']:
+            print("Invalid Option")
+            
+        if user_input == "0":
+            clear_screen()
+            print("GoodBye Exiting Parser....")
+
+            input("Press Enter to Continue...")
+
+            break
+
+        elif user_input == "1":
+            p_input = input("OPT Dir name : ")
+            process_directory(p_input)
+
+        print()
+        input("Press Enter to Continue...")
 
 if __name__=="__main__":
     #rename(dest,source)
