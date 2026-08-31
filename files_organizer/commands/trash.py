@@ -4,22 +4,102 @@ from pathlib import Path
 import send2trash
 from organize_util import check_f_status,check_d_status,check_fd_status
 from organize_util import setup_logger
+import platform
+
 
 logger = setup_logger(__name__)
 
-home = os.path.expanduser("~")
-desktop = os.path.join(home,"Desktop")
 
-source = os.path.join(desktop,"db")
-destination = os.path.join(desktop,"marley")
+def clear_screen():
+    command = 'cls' if platform.system() == 'Windows' else 'clear'
+    os.system(command)
 
 
-def trash(path):
-    path = Path(path)
-    if check_fd_status(path):
+def trash(path=None):
+    try:
+
+        if check_fd_status(path):
+            print()
+            send2trash.send2trash(path)
+            logger.info(f"Sent to Trash...Path :[{path}]")
+    except Exception as e:
+        print(f"An Exception Occured : {e}")
+
+
+def trash_selected(name=None,ext=None,source_dir=None,feat=None):
+    try:
+        if check_fd_status(source_dir):
+            print()
+            if os.path.isdir(source_dir):
+                if feat == "sub":
+                    for root,dirs,files in os.walk(source_dir):
+                        for file in files:
+                            if file.endswith(ext) and name in file:
+                                source_path = os.path.join(root,file)
+                                send2trash.send2trash(source_path)
+                                logger.info(f"Sent to Trash...Path :[{source_path}]")
+                elif feat == "top":
+                    for file in os.listdir(source_dir):
+                        if file.endswith(ext) and name in file:
+                            source_path = os.path.join(source_dir,file)
+                            send2trash.send2trash(source_path)
+                            logger.info(f"Sent to Trash...Path :[{source_path}]")
+                
+    except Exception as e:
         print()
-        send2trash.send2trash(path)
-        logger.info(f"Sent to Trash...Path :[{path}]")
+        print(f"An Exception occured : [{e}]")
+
+def trash_main():
+    while True:
+        clear_screen()
+
+        user_input = input("""
+[0] Exit Trash 
+[1] Trash Path(File/Dir(Tree))
+[2] Trash Selected File(s) (Name/Ext)
+                    
+    OPT Input : """)
+        print()
+        
+        if user_input not in ['0','1','2']:
+            print("Invalid Option")
+            
+        if user_input == "0":
+            clear_screen()
+            print("GoodBye Exiting Trash....")
+
+            input("Press Enter to Continue...")
+
+            break
+
+        elif user_input == "1":
+            path = input("Path to File/Dir : ")
+            trash(path)
+
+        elif user_input == "2":
+            
+
+            feat = input("""
+[1] Top Level (Ignore Sub Dir(s))
+[2] Sub Level (Entire Sub Dir(s)Tree) 
+        
+        OPT Input : """)
+            print()
+            
+            if feat == "1":
+                name = input("File Name : ")
+                ext = input("File Extension : ")
+                source = input("Source Path(Dir) : ")
+                trash_selected(name,ext,source,"top")
+
+            elif feat == "2":
+                name = input("File Name : ")
+                ext = input("File Extension : ")
+                source = input("Source Path(Dir) : ")
+                trash_selected(name,ext,source,"sub")
+
+        print()
+        input("Press Enter to Continue...")
 
 if __name__=="__main__":
     #trash(source)
