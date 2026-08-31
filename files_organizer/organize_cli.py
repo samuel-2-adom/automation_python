@@ -25,11 +25,11 @@ def main():
              OPT Input : """)
              if copy_input == "1":
                  source = input("Source Path(File) : ")
-                 dest = input("Destination Path(File) : ")
+                 dest = input("Destination Path : ")
                  copy("file",source,dest)
              elif copy_input == "2":
                 source = input("Source Path(Dir) : ")
-                dest = input("Destination Path(Dir) : ")
+                dest = input("Destination Path : ")
                 copy("dir",None,None,source,dest)
              else:
                  pass
@@ -41,12 +41,12 @@ def main():
              OPT Input : """)
             if move_input == "1":
                 source = input("Source Path (File) : ")
-                dest = input("Destination Path (File) : ")
+                dest = input("Destination Path : ")
                 move("file",source,dest)
         
             elif move_input == "2":
                 source = input("Source Path (Dir) : ")
-                dest = input("Destination Path (Dir) : ")
+                dest = input("Destination Path : ")
                 move("dir",None,None,source,dest)
             
             else:
