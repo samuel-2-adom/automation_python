@@ -2,6 +2,7 @@ import shutil
 import os
 from organize_util import check_f_status,check_d_status,check_fd_status
 from organize_util import setup_logger
+from organize_util import loading_animation, render_screen_move
 import platform
 
 logger = setup_logger(__name__)
@@ -74,14 +75,9 @@ def move_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
 def move_main():
     while True:
         clear_screen()
+        render_screen_move()
 
-        user_input = input("""
-[0] Exit Move 
-[1] Move File
-[2] Move Dir(Tree)
-[3] Move Selected File(s) (Name/Ext)
-    
-                    
+        user_input = input("""                  
     OPT Input : """)
         print()
         
@@ -90,10 +86,7 @@ def move_main():
             
         if user_input == "0":
             clear_screen()
-            print("GoodBye Exiting Move....")
-
-            input("Press Enter to Continue...")
-
+            loading_animation("Exiting Move...", 3)
             break
 
         elif user_input == "1":

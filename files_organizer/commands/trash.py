@@ -4,6 +4,7 @@ from pathlib import Path
 import send2trash
 from organize_util import check_f_status,check_d_status,check_fd_status
 from organize_util import setup_logger
+from organize_util import loading_animation, render_screen_trash
 import platform
 
 
@@ -52,12 +53,8 @@ def trash_selected(name=None,ext=None,source_dir=None,feat=None):
 def trash_main():
     while True:
         clear_screen()
-
-        user_input = input("""
-[0] Exit Trash 
-[1] Trash Path(File/Dir(Tree))
-[2] Trash Selected File(s) (Name/Ext)
-                    
+        render_screen_trash()
+        user_input = input("""              
     OPT Input : """)
         print()
         
@@ -66,10 +63,7 @@ def trash_main():
             
         if user_input == "0":
             clear_screen()
-            print("GoodBye Exiting Trash....")
-
-            input("Press Enter to Continue...")
-
+            loading_animation("Exiting Trash...", 3)
             break
 
         elif user_input == "1":

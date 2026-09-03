@@ -2,6 +2,7 @@ import shutil
 import os
 from organize_util import check_f_status,check_d_status,check_fd_status
 from organize_util import setup_logger
+from organize_util import loading_animation, render_screen_copy
 import platform
 
 logger = setup_logger(__name__)
@@ -76,14 +77,8 @@ def copy_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
 def copy_main():
     while True:
         clear_screen()
-
-        user_input = input("""
-[0] Exit Copy
-[1] Copy File
-[2] Copy Dir(Tree)
-[3] Copy Selected File(s) (Name/Ext)
-    
-                    
+        render_screen_copy()
+        user_input = input("""                  
     OPT Input : """)
         print()
 
@@ -92,9 +87,8 @@ def copy_main():
             
         if user_input == "0":
             clear_screen()
-            print("GoodBye Exiting Copy....")
 
-            input("Press Enter to Continue...")
+            loading_animation("Exiting Copy...", 3)
 
             break
 

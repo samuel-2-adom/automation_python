@@ -1,6 +1,7 @@
 from pathlib import Path
 from organize_util import parser
 from organize_util import formatter
+from organize_util import loading_animation, render_screen_parse
 import platform
 import os
 
@@ -78,11 +79,8 @@ def process_directory(directory):
 def process_directory_main():
     while True:
         clear_screen()
-
+        render_screen_parse()
         user_input = input("""
-[0] Exit Parser
-[1] Parse Dir(Series(Season/Episode))
-
     OPT Input : """)
         print()
 
@@ -91,10 +89,7 @@ def process_directory_main():
             
         if user_input == "0":
             clear_screen()
-            print("GoodBye Exiting Parser....")
-
-            input("Press Enter to Continue...")
-
+            loading_animation("Exiting Parser...", 3)
             break
 
         elif user_input == "1":

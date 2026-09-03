@@ -2,6 +2,7 @@ import shutil
 import os
 from organize_util import check_f_status,check_d_status,check_fd_status
 from organize_util import setup_logger
+from organize_util import loading_animation, render_screen_rename
 from pathlib import Path
 import platform
 
@@ -55,7 +56,7 @@ def rename(source_path,dest_path):
 #         print(f"An Exception occured : [{e}]")
 
 
-def rename_selected(name=None, ext=None, source_dir=None, prefix="", start=1, width=3,feat=None):
+def rename_selected(name=None, ext=None, source_dir=None, prefix="", feat=None, start=1, width=3):
     try:
         counter = start
         if feat == "sub":
@@ -100,12 +101,9 @@ def rename_selected(name=None, ext=None, source_dir=None, prefix="", start=1, wi
 def rename_main():
     while True:
         clear_screen()
-        user_input = input("""
-[0] Exit Rename
-[1] Rename File/Directory
-[2] Rename Selected File(s) (Prefix) (Name/ext)
+        render_screen_rename()
 
-        
+        user_input = input("""
         OPT Input : """)
         print()
 
@@ -114,10 +112,7 @@ def rename_main():
                     
         if user_input == "0":
             clear_screen()
-            print("GoodBye Exiting Rename....")
-
-            input("Press Enter to Continue...")
-
+            loading_animation("Exiting Rename...", 3)
             break
 
         elif user_input == "1":
@@ -126,24 +121,33 @@ def rename_main():
             rename(source,dest)
 
         elif user_input == '2':
-            feat = input("""
-[1] Top Level (Ignore Sub Dir(s))
-[2] Sub Level (Entire Sub Dir(s)Tree) 
-        
-        OPT Input : """)
-            if feat == "1":
-                name = input("File Name : ")
-                ext = input("File Extension : ")
-                source = input("Source Path(Dir) : ")
-                prefix = input("Prefix(beginning word of file) : ")
-                rename_selected(name,ext,source,prefix,"top")
+            try:
+                feat = input("""
+    [1] Top Level (Ignore Sub Dir(s))
+    [2] Sub Level (Entire Sub Dir(s)Tree) 
+            
+            OPT Input : """)
+                if feat == "1":
+                    name = input("File Name : ")
+                    ext = input("File Extension : ")
+                    source = input("Source Path(Dir) : ")
+                    prefix = input("Prefix(beginning word of file) : ")
+                    rename_selected(name,ext,source,prefix,"top")
 
-            elif feat == "2":
-                name = input("File Name : ")
-                ext = input("File Extension : ")
-                source = input("Source Path(Dir) : ")
-                prefix = input("Prefix(beginning word of file) : ")
-                rename_selected(name,ext,source,prefix,"sub")
+                elif feat == "2":
+                    name = input("File Name : ")
+                    ext = input("File Extension : ")
+                    source = input("Source Path(Dir) : ")
+                    prefix = input("Prefix(beginning word of file) : ")
+                    rename_selected(name,ext,source,prefix,"sub")
+
+                else:
+                    logger.warning("function [rename_selected(feat=None)]")
+                    raise Exception("rename_selected() - (feat=None) 0 feature in use")
+                
+            except Exception as e:
+                print()
+                print(f"An Exception occured : [{e}]")
 
         print()
         input("Press Enter to Continue...")
