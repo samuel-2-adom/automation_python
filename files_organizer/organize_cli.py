@@ -19,7 +19,7 @@ def main():
         print()
 
         if user_input not in ("0","1","2","3","4","5"):
-            print("Invalid OPT....")
+            print("Invalid Option Selected....")
 
         if user_input == "0":
             print("🚀🚀🚀 GoodBye Exiting Organizer....")
@@ -40,6 +40,9 @@ def main():
 
         elif user_input == "5":
             process_directory_main()
+
+        print()
+        input("Press Enter to Continue...")
         
         
 main()

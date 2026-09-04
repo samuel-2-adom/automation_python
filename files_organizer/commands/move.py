@@ -51,6 +51,7 @@ def move_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
 
                             relative_path = os.path.relpath(source_path, source_dir)
                             dest_path = os.path.join(dest_dir,relative_path)
+                            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                             shutil.move(source_path,dest_path)
                             logger.info(f"Moved Selected File :[{source_path}] to Destination : [{dest_path}]")
             elif feat == "top":
@@ -60,6 +61,7 @@ def move_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
 
                         relative_path = os.path.relpath(source_path, source_dir)
                         dest_path = os.path.join(dest_dir,relative_path)
+                        os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                         shutil.move(source_path,dest_path)
                         logger.info(f"Moved File :[{source_path}] to Destination : [{dest_path}]")
 
@@ -82,11 +84,11 @@ def move_main():
         print()
         
         if user_input not in ['0','1','2','3']:
-            print("Invalid Option")
-            
+            logger.info("Invalid Option Selected")
+
         if user_input == "0":
             clear_screen()
-            loading_animation("Exiting Move...", 3)
+            loading_animation("Exiting Move...", 1)
             break
 
         elif user_input == "1":
@@ -108,18 +110,21 @@ def move_main():
             print()
 
             if feat == "1":
-                name = input("File Name : ")
+                name = input("File Name (no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 dest = input("Destination Path(Dir) : ")
                 move_selected(name,ext,source,dest,"top")
 
             elif feat == "2":
-                name = input("File Name : ")
+                name = input("File Name (no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 dest = input("Destination Path(Dir) : ")
                 move_selected(name,ext,source,dest,"sub")
+
+            else:
+                logger.info("Invalid Feature Selected")
 
         print()
         input("Press Enter to Continue...")

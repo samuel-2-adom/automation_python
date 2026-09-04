@@ -108,16 +108,16 @@ def rename_main():
         print()
 
         if user_input not in ['0','1','2']:
-            print("Invalid Option")
-                    
+            logger.info("Invalid Option Selected")
+
         if user_input == "0":
             clear_screen()
-            loading_animation("Exiting Rename...", 3)
+            loading_animation("Exiting Rename...", 1)
             break
 
         elif user_input == "1":
             source = input("Source Path (File/Dir) : ")
-            dest = input("Source Path (File/Dir) + New Name : ")
+            dest = input("Destination Path (File/Dir) + New Name : ")
             rename(source,dest)
 
         elif user_input == '2':
@@ -128,23 +128,22 @@ def rename_main():
             
             OPT Input : """)
                 if feat == "1":
-                    name = input("File Name : ")
+                    name = input("File Name (no extension) : ")
                     ext = input("File Extension : ")
                     source = input("Source Path(Dir) : ")
                     prefix = input("Prefix(beginning word of file) : ")
                     rename_selected(name,ext,source,prefix,"top")
 
                 elif feat == "2":
-                    name = input("File Name : ")
+                    name = input("File Name (no extension) : ")
                     ext = input("File Extension : ")
                     source = input("Source Path(Dir) : ")
                     prefix = input("Prefix(beginning word of file) : ")
                     rename_selected(name,ext,source,prefix,"sub")
 
                 else:
-                    logger.warning("function [rename_selected(feat=None)]")
-                    raise Exception("rename_selected() - (feat=None) 0 feature in use")
-                
+                    logger.info("Invalid Feature Selected")
+
             except Exception as e:
                 print()
                 print(f"An Exception occured : [{e}]")

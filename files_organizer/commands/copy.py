@@ -52,6 +52,7 @@ def copy_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
 
                             relative_path = os.path.relpath(source_path, source_dir)
                             dest_path = os.path.join(dest_dir,relative_path)
+                            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                             shutil.copy(source_path,dest_path)
                             logger.info(f"Copied Selected File :[{source_path}] to Destination : [{dest_path}]")
 
@@ -62,12 +63,17 @@ def copy_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
 
                         relative_path = os.path.relpath(source_path, source_dir)
                         dest_path = os.path.join(dest_dir,relative_path)
+                        os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                         shutil.copy(source_path,dest_path)
                         logger.info(f"Copied Selected File :[{source_path}] to Destination : [{dest_path}]")
 
             else:
                 logger.warning("function [copy_selected(feat=None)]")
                 raise Exception("copy_selected() - (feat=None) 0 feature in use")
+
+        else:
+            logger.warning("function [copy_selected(source_dir=None)]")
+            raise Exception("copy_selected() - (source_dir=None) 0 feature in use")
             
     except Exception as e:
         print()
@@ -83,12 +89,12 @@ def copy_main():
         print()
 
         if user_input not in ['0','1','2','3']:
-            print("Invalid Option")
-            
+            logger.info("Invalid Option Selected")
+
         if user_input == "0":
             clear_screen()
 
-            loading_animation("Exiting Copy...", 3)
+            loading_animation("Exiting Copy...", 1)
 
             break
 
@@ -111,17 +117,21 @@ def copy_main():
             print()
 
             if feat == "1":
-                name = input("File Name : ")
+                name = input("File Name(no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 dest = input("Destination Path(Dir) : ")
                 copy_selected(name,ext,source,dest,"top")
             elif feat == "2":
-                name = input("File Name : ")
+                name = input("File Name(no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 dest = input("Destination Path(Dir) : ")
                 copy_selected(name,ext,source,dest,"sub")
+            else:
+                logger.info("Invalid Feature Selected")
+
+
 
         print()
         input("Press Enter to Continue...")

@@ -59,11 +59,11 @@ def trash_main():
         print()
         
         if user_input not in ['0','1','2']:
-            print("Invalid Option")
+            logger.info("Invalid Option Selected")
             
         if user_input == "0":
             clear_screen()
-            loading_animation("Exiting Trash...", 3)
+            loading_animation("Exiting Trash...", 1)
             break
 
         elif user_input == "1":
@@ -81,16 +81,19 @@ def trash_main():
             print()
             
             if feat == "1":
-                name = input("File Name : ")
+                name = input("File Name (no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 trash_selected(name,ext,source,"top")
 
             elif feat == "2":
-                name = input("File Name : ")
+                name = input("File Name (no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 trash_selected(name,ext,source,"sub")
+
+            else:
+                logger.info("Invalid Feature Selected")
 
         print()
         input("Press Enter to Continue...")

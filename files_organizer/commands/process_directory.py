@@ -1,9 +1,12 @@
 from pathlib import Path
+from organize_util import setup_logger
 from organize_util import parser
 from organize_util import formatter
 from organize_util import loading_animation, render_screen_parse
 import platform
 import os
+
+logger = setup_logger(__name__)
 
 def clear_screen():
     command = 'cls' if platform.system() == 'Windows' else 'clear'
@@ -85,11 +88,11 @@ def process_directory_main():
         print()
 
         if user_input not in ['0','1']:
-            print("Invalid Option")
-            
+            logger.info("Invalid Option Selected")
+
         if user_input == "0":
             clear_screen()
-            loading_animation("Exiting Parser...", 3)
+            loading_animation("Exiting Parser...", 1)
             break
 
         elif user_input == "1":
