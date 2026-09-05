@@ -1,8 +1,6 @@
 # 🛠️ Automation — Python CLI Tools
 
-A collection of small Python CLI automation utilities for file management and related tasks, organized so you can keep adding tiny projects in one repo while keeping a consistent run/test workflow.
-
-This repository is intentionally structured to host multiple small command-line tools (each a mini-project) under a single repo. It follows the same organization and README style used in `python-mini-projects` so each tool is discoverable and easy to run.
+This repository is intentionally structured to host multiple small command-line tools (each a mini-project) under a single repo.
 
 ---
 
