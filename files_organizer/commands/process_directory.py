@@ -97,6 +97,7 @@ def process_directory_main():
 
         elif user_input == "1":
             p_input = input("OPT Dir name : ")
+            print()
             process_directory(p_input)
 
         print()

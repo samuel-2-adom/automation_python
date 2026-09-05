@@ -44,6 +44,7 @@ def move_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
         if check_fd_status(source_dir):
             print()
             if feat == "sub":
+                success = False
                 for root,dirs,files in os.walk(source_dir):
                     for file in files:
                         if file.endswith(ext) and name in file:
@@ -53,8 +54,13 @@ def move_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
                             dest_path = os.path.join(dest_dir,relative_path)
                             os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                             shutil.move(source_path,dest_path)
+                            success = True
                             logger.info(f"Moved Selected File :[{source_path}] to Destination : [{dest_path}]")
+                if not success:
+                    logger.info(f"No files found with name [{name}] and extension [{ext}] in source directory [{source_dir}]")
+
             elif feat == "top":
+                success = False
                 for file in os.listdir(source_dir):
                     if file.endswith(ext) and name in file:
                         source_path = os.path.join(source_dir, file)
@@ -63,7 +69,10 @@ def move_selected(name=None,ext=None,source_dir=None,dest_dir=None,feat=None):
                         dest_path = os.path.join(dest_dir,relative_path)
                         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                         shutil.move(source_path,dest_path)
+                        success = True
                         logger.info(f"Moved File :[{source_path}] to Destination : [{dest_path}]")
+                if not success:
+                    logger.info(f"No files found with name [{name}] and extension [{ext}] in source directory [{source_dir}]")
 
             else:
                 logger.warning("function [move_selcted(feat=None)]")
@@ -94,11 +103,13 @@ def move_main():
         elif user_input == "1":
             source = input("Source Path(File) : ")
             dest = input("Destination Path(Dir) : ")
+            print()
             move("file",source,dest)
 
         elif user_input == "2":
             source = input("Source Path(Dir) : ")
             dest = input("Destination Path(Dir) : ")
+            print()
             move("dir",None,None,source,dest)
 
         elif user_input == "3":
@@ -114,6 +125,7 @@ def move_main():
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 dest = input("Destination Path(Dir) : ")
+                print()
                 move_selected(name,ext,source,dest,"top")
 
             elif feat == "2":
@@ -121,6 +133,7 @@ def move_main():
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
                 dest = input("Destination Path(Dir) : ")
+                print()
                 move_selected(name,ext,source,dest,"sub")
 
             else:

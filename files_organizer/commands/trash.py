@@ -33,18 +33,27 @@ def trash_selected(name=None,ext=None,source_dir=None,feat=None):
             print()
             if os.path.isdir(source_dir):
                 if feat == "sub":
+                    success = False
                     for root,dirs,files in os.walk(source_dir):
                         for file in files:
                             if file.endswith(ext) and name in file:
                                 source_path = os.path.join(root,file)
                                 send2trash.send2trash(source_path)
+                                success = True
                                 logger.info(f"Sent to Trash...Path :[{source_path}]")
+                    if not success:
+                        logger.info(f"No files found with name [{name}] and extension [{ext}] in source directory [{source_dir}]")
+
                 elif feat == "top":
+                    success = False
                     for file in os.listdir(source_dir):
                         if file.endswith(ext) and name in file:
                             source_path = os.path.join(source_dir,file)
                             send2trash.send2trash(source_path)
+                            success = True
                             logger.info(f"Sent to Trash...Path :[{source_path}]")
+                    if not success:
+                        logger.info(f"No files found with name [{name}] and extension [{ext}] in source directory [{source_dir}]")
                 
     except Exception as e:
         print()
@@ -68,6 +77,7 @@ def trash_main():
 
         elif user_input == "1":
             path = input("Path to File/Dir : ")
+            print()
             trash(path)
 
         elif user_input == "2":
@@ -84,12 +94,14 @@ def trash_main():
                 name = input("File Name (no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
+                print()
                 trash_selected(name,ext,source,"top")
 
             elif feat == "2":
                 name = input("File Name (no extension) : ")
                 ext = input("File Extension : ")
                 source = input("Source Path(Dir) : ")
+                print()
                 trash_selected(name,ext,source,"sub")
 
             else:

@@ -60,35 +60,40 @@ def rename_selected(name=None, ext=None, source_dir=None, prefix="", feat=None, 
     try:
         counter = start
         if feat == "sub":
+            sucess = False
             for root, dirs, files in os.walk(source_dir):
                 for file in sorted(files):
-                    if not file.endswith(ext) and not name in file:
-                        continue
-                    else:
+                    if file.endswith(ext) and name in file:
                         old_path = os.path.join(root, file)
                         stem, suffix = os.path.splitext(file)
                         new_name = f"{prefix}{counter:0{width}d}{suffix}"
                         new_path = os.path.join(root, new_name)
 
                         os.rename(old_path, new_path)
+                        sucess = True
                         logger.info(f"Renamed [{old_path}] -> [{new_path}]")
 
                         counter += 1
+            if not sucess:
+                logger.info(f"No files found with name [{name}] and extension [{ext}] in source directory [{source_dir}]")
 
         elif feat=="top":
+            success = False
             for file in sorted(os.listdir(source_dir)):
-                if not file.endswith(ext) and not name in file:
-                    continue
-                else:
-                    old_path = os.path.join(source_dir,file)
+                old_path = os.path.join(source_dir, file)
+                if os.path.isfile(old_path) and file.endswith(ext) and name in file:
                     stem, suffix = os.path.splitext(file)
                     new_name = f"{prefix}{counter:0{width}d}{suffix}"
                     new_path = os.path.join(source_dir, new_name)
                     
                     os.rename(old_path, new_path)
+                    success = True
                     logger.info(f"Renamed [{old_path}] -> [{new_path}]")
 
                     counter += 1
+            if not success:
+                logger.info(f"No files found with name [{name}] and extension [{ext}] in source directory [{source_dir}]")
+
         else:
             logger.warning("function [rename_selected(feat=None)]")
             raise Exception("rename_selected() - (feat=None) 0 feature in use")
@@ -118,6 +123,7 @@ def rename_main():
         elif user_input == "1":
             source = input("Source Path (File/Dir) : ")
             dest = input("Destination Path (File/Dir) + New Name : ")
+            print()
             rename(source,dest)
 
         elif user_input == '2':
@@ -127,11 +133,14 @@ def rename_main():
     [2] Sub Level (Entire Sub Dir(s)Tree) 
             
             OPT Input : """)
+                print()
+                
                 if feat == "1":
                     name = input("File Name (no extension) : ")
                     ext = input("File Extension : ")
                     source = input("Source Path(Dir) : ")
                     prefix = input("Prefix(beginning word of file) : ")
+                    print()
                     rename_selected(name,ext,source,prefix,"top")
 
                 elif feat == "2":
@@ -139,6 +148,7 @@ def rename_main():
                     ext = input("File Extension : ")
                     source = input("Source Path(Dir) : ")
                     prefix = input("Prefix(beginning word of file) : ")
+                    print()
                     rename_selected(name,ext,source,prefix,"sub")
 
                 else:
