@@ -1,55 +1,76 @@
-# automation_python
+# 🛠️ Automation — Python CLI Tools
 
-A small collection of tiny file-organizer CLI tools (copy / move / rename / trash / process-directory) grouped under files_organizer. This repo is intentionally minimal and designed for experimenting with modules, imports, and packages in Python.
+A collection of small Python CLI automation utilities for file management and related tasks, organized so you can keep adding tiny projects in one repo while keeping a consistent run/test workflow.
 
-[![tests](https://img.shields.io/badge/tests-pytest-blue)]()
-[![license](https://img.shields.io/badge/license-MIT-lightgrey)]()
+This repository is intentionally structured to host multiple small command-line tools (each a mini-project) under a single repo. It follows the same organization and README style used in `python-mini-projects` so each tool is discoverable and easy to run.
 
+---
 
-## Quick overview
-- Single repository that holds multiple small CLI utilities in files_organizer/.
-- The interactive entrypoint is files_organizer/organize_cli.py which presents a terminal menu and delegates work to modules under files_organizer/commands.
-- This repo prefers the simple run method: change into the package folder and execute the script. That keeps imports local and is convenient while learning packages and imports.
+## 📚 What you'll learn
 
-## Run (recommended for this repo)
-From a fresh clone, run the interactive CLI with the exact commands below:
+- CLI argument parsing and interactive menus
+- Working with packages, modules, and imports in Python
+- File I/O and filesystem operations (copy, move, rename, trash)
+- Writing small, testable utilities (parsers, status checks)
+- Unit testing with pytest and using tmp_path/monkeypatch for filesystem tests
+- Basic terminal UI patterns (loading animations, simple renderers)
+
+---
+
+## 🧰 Projects included
+
+This repo is designed to contain multiple small automation CLI tools. Right now it includes:
+
+- files_organizer — a menu-driven file organizer (copy / move / rename / trash / process-directory)
+
+Future mini-projects can be added as sibling folders at the top level.
+
+---
+
+## 📁 Project structure (recommended)
+
+```
+automation_python/
+├── README.md                  # This file
+├── files_organizer/           # First mini-project (file organizer)
+│   ├── organize_cli.py        # interactive entrypoint (run from inside this folder)
+│   ├── commands/              # command implementations (copy, move, rename, trash, ...)
+│   └── organize_util/         # shared helpers (parsers, renderers, logger)
+├── tests/                     # unified test suite for all mini-projects (pytest)
+└── .gitignore
+```
+
+Each mini-project should follow the same internal layout (an entry script plus modular code under subpackages) so tests and CI can be shared.
+
+---
+
+## 🚀 Quick start — run the file organizer (recommended)
+
+I recommend the simple workflow you chose while learning packages and imports: change into the package folder and execute the script so the local imports resolve naturally.
 
 ```bash
-cd files_organizer
+git clone https://github.com/samuel-2-adom/automation_python.git
+cd automation_python/files_organizer
 python organize_cli.py
 ```
 
 Notes:
-- The code currently imports modules using local names (e.g. `from commands import copy`). Running from inside files_organizer makes those imports resolve against the current working directory.
-- If you later want to run the CLI from the repo root or install it, see the "Make it importable" section below.
+- The project currently uses local imports like `from commands import copy` so running from inside `files_organizer` makes those imports resolve.
+- If you later want to run from repo root or install the package, convert `files_organizer` into a package (add `files_organizer/__init__.py`) and switch to package imports — instructions below.
 
-## What's in this repo
-- files_organizer/
-  - organize_cli.py        — interactive menu and main() entrypoint
-  - commands/              — implementations for copy, move, rename, trash, process_directory
-  - organize_util/         — shared helpers: parsers, renderers, logger setup, status checks
-- README.md                — this file
-- test.py                  — placeholder (no tests yet)
+---
 
-## Usage examples
-After running the CLI, choose one of the numbered options in the menu. Example: to copy files, choose option 1 and follow the prompts.
+## 🧪 Tests
 
-If you want to run a single command module directly while inside files_organizer for quick testing, you can do:
+This repo uses a single test suite for all mini-projects to keep things simple.
 
-```bash
-python -c "from commands.copy import copy; print(copy)"    # quick import test
-```
-
-(Prefer running the interactive menu for normal use.)
-
-## Tests
-This repo uses a single test suite for simplicity. Suggested layout:
+Suggested layout:
 
 ```
 tests/
   test_parser.py
   test_check_status.py
-  test_commands_integration.py  # if you add small integration tests
+  test_copy_selected.py
 ```
 
 Run tests locally:
@@ -59,40 +80,101 @@ pip install -U pytest
 pytest -q
 ```
 
-Testing notes:
-- Focus unit tests on deterministic utilities in `files_organizer/organize_util` (parsing, patterns, status checks).
-- For commands that touch the filesystem, use pytest's `tmp_path` and `monkeypatch` fixtures to avoid changing real files.
-- Keep integration tests short; e.g., test that copy_selected copies expected files under a temporary tree.
+Testing tips:
+- Unit-test deterministic helpers in `files_organizer/organize_util` first (parser, patterns, check_status).
+- For filesystem-affecting code, use `tmp_path` and `monkeypatch` to create temporary trees and avoid modifying real files.
+- Keep integration tests short (e.g., verify that `copy_selected` copies expected files within a temp directory).
 
-## Make it importable (optional)
-If you want to run the CLI from the repo root (or `python -m`), convert `files_organizer` to a proper package and use package imports:
+---
 
-1. Add an empty `files_organizer/__init__.py` file.
-2. Change imports in `organize_cli.py` and modules to use the package name: e.g.
-   - `from files_organizer.commands import copy, move, ...`
-   - `from files_organizer.organize_util import parser, patterns, ...`
-3. Run the CLI with:
+## ⚙️ Make a mini-project importable (optional)
+
+If you later want to run a tool from the repository root or with `python -m`, convert a mini-project into a real package:
+
+1. Add `files_organizer/__init__.py`.
+2. Change imports to use the package name (example):
+   - `from files_organizer.commands import copy` instead of `from commands import copy`
+3. Run via:
 
 ```bash
 python -m files_organizer.organize_cli
 ```
 
-This approach is slightly more work but makes the project behave like an installable package.
+This is optional — the `cd`-into-folder pattern is fine for learning and small experiments.
 
-## How to add a new CLI tool
-1. Add a new module under `files_organizer/commands/` implementing the feature. Follow the pattern used by existing modules (provide `<feature>_main()` for interactive submenus and helper functions for logic).
-2. Export the new functions in `files_organizer/commands/__init__.py`.
-3. Add a menu entry in `files_organizer/organize_cli.py` to call the new `<feature>_main()`.
-4. Add unit tests to `tests/` covering any parsing/utility logic.
+---
 
-## Development & style
-- Formatter: black
-- Linting: flake8 (optional)
-- Keep functions small and testable; push filesystem operations behind small helper functions so you can mock them in tests.
+## 🔧 How to add a new mini-project
 
-## License
-MIT © Your Name
+1. Create a new top-level folder, e.g. `auto_rename/`.
+2. Add an entry script (one-line menu) and modularize logic under subpackages (commands/ or lib/).
+3. Add tests in `tests/` that cover utilities and small integration scenarios.
+4. Add a short section to this README under "Projects included".
 
-## Contact
+Suggested checklist for each new mini-project:
+- [ ] Has a single interactive entrypoint or single CLI file
+- [ ] Exposes small testable functions (avoid large monolithic scripts)
+- [ ] Includes a brief README/usage snippet inside the folder
+- [ ] Adds unit tests to the shared `tests/` folder
+
+---
+
+## 🛠 Built with
+
+- Python 3.x (standard library: os, shutil, pathlib)
+- pytest for tests
+- Optional: rich for nicer terminal UIs
+
+---
+
+## 📝 Prerequisites
+
+- Python 3.8+ (3.10+ recommended)
+- pip
+
+Check Python version:
+
+```bash
+python --version
+```
+
+---
+
+## 🧭 Example usage (files_organizer)
+
+After running `python organize_cli.py` inside `files_organizer`, choose menu options to copy, move, rename, or trash files. Example: choose option `1` to enter the copy submenu and follow prompts.
+
+Quick import test while inside `files_organizer`:
+
+```bash
+python -c "from commands.copy import copy; print(copy.__name__)"
+```
+
+---
+
+## 📦 CI & automation (suggestion)
+
+When you're ready, add a simple GitHub Actions workflow that runs `pytest` on push and PR. Keep one job that sets up Python and runs `pytest`. Add the badge to this README so test status is visible.
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome — follow these steps:
+1. Fork the repo
+2. Create a feature branch
+3. Add tests for new behavior
+4. Open a PR
+
+---
+
+## 📄 License
+
+MIT © Samuel Adom
+
+---
+
+## ✉️ Contact
+
 - GitHub: @samuel-2-adom
 
