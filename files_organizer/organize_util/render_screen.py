@@ -52,11 +52,11 @@ def render_screen_main():
 
     Rule(style="bold"),  # 👈 now goes edge-to-edge
 
-    " [yellow][1][/yellow] 📋 [cyan]Copy[/cyan]",
-    " [yellow][2][/yellow] 🚚 [cyan]Move[/cyan]",
-    " [yellow][3][/yellow] ✏️  [cyan]Rename[/cyan]",
-    " [yellow][4][/yellow] 🗑️  [cyan]Trash[/cyan]",
-    " [yellow][5][/yellow] 🧩 [cyan]Parser[/cyan]",
+    " [yellow][1][/yellow]  [cyan]Copy[/cyan] 📋",
+    " [yellow][2][/yellow]  [cyan]Move[/cyan] 🚚",
+    " [yellow][3][/yellow]  [cyan]Rename[/cyan] ✏️",
+    " [yellow][4][/yellow]  [cyan]Trash[/cyan] 🗑️",
+    " [yellow][5][/yellow]  [cyan]Parser[/cyan] 🧩",
 
 )
     
@@ -96,9 +96,9 @@ def render_screen_copy():
 
     Rule(style="bold"),  # 👈 now goes edge-to-edge
 
-    " [yellow][1][/yellow] 📋 [cyan]Copy File[/cyan]",
-    " [yellow][2][/yellow] 📁 [cyan]Copy Dir(Tree)[/cyan]",
-    " [yellow][3][/yellow] 🏷️  [cyan]Copy Selected File(s) (Name/Ext)[/cyan]",
+    " [yellow][1][/yellow]  [cyan]Copy File[/cyan] 📋",
+    " [yellow][2][/yellow]  [cyan]Copy Dir(Tree)[/cyan] 📁",
+    " [yellow][3][/yellow]  [cyan]Copy Selected File(s) (Name/Ext)[/cyan] 🏷️",
 
 )
     
@@ -138,9 +138,9 @@ def render_screen_move():
 
     Rule(style="bold"),  # 👈 now goes edge-to-edge
 
-    " [yellow][1][/yellow] 🚚 [cyan]Move File[/cyan]",
-    " [yellow][2][/yellow] 🗂️  [cyan]Move Dir(Tree)[/cyan]",
-    " [yellow][3][/yellow] 🏷️  [cyan]Move Selected File(s) (Name/Ext)[/cyan]",
+    " [yellow][1][/yellow]  [cyan]Move File[/cyan] 🚚",
+    " [yellow][2][/yellow]  [cyan]Move Dir(Tree)[/cyan] 🗂️",
+    " [yellow][3][/yellow]  [cyan]Move Selected File(s) (Name/Ext)[/cyan] 🏷️",
 
 )
     
@@ -179,8 +179,8 @@ def render_screen_rename():
 
     Rule(style="bold"),  # 👈 now goes edge-to-edge
 
-    " [yellow][1][/yellow] ✏️  [cyan]Rename File/Directory[/cyan]",
-    " [yellow][2][/yellow] 🏷️  [cyan]Rename Selected File(s) (Prefix) (Name/Ext)[/cyan]",
+    " [yellow][1][/yellow]  [cyan]Rename File/Directory[/cyan] ✏️",
+    " [yellow][2][/yellow]  [cyan]Rename Selected File(s) (Prefix) (Name/Ext)[/cyan] 🏷️",
 
 )
     
@@ -220,8 +220,8 @@ def render_screen_trash():
 
     Rule(style="bold"),  # 👈 now goes edge-to-edge
 
-    " [yellow][1][/yellow] 🗑️  [cyan]Trash Path(File/Dir(Tree))[/cyan]",
-    " [yellow][2][/yellow] 🚮 [cyan]Trash Selected File(s) (Name/Ext)[/cyan]",
+    " [yellow][1][/yellow]  [cyan]Trash Path(File/Dir(Tree))[/cyan] 🗑️",
+    " [yellow][2][/yellow]  [cyan]Trash Selected File(s) (Name/Ext)[/cyan] 🚮",
 
 )
     
@@ -261,7 +261,7 @@ def render_screen_parse():
 
     Rule(style="bold"),  # 👈 now goes edge-to-edge
 
-    " [yellow][1][/yellow] 🔍 [cyan]Parse Dir(Series(Season/Episode))[/cyan]",
+    " [yellow][1][/yellow]  [cyan]Parse Dir(Series(Season/Episode))[/cyan] 🔍",
 
 )
     
