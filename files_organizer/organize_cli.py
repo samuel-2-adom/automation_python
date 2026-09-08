@@ -1,4 +1,4 @@
-from commands import copy,move,trash,rename,process_directory,copy_main,move_main,trash_main,rename_main,process_directory_main
+from commands import copy,move,trash,rename,process_directory,copy_main,move_main,trash_main,rename_main,process_directory_main,zip_main
 from organize_util import check_f_status,check_d_status,check_fd_status,setup_logger,patterns,parser,formatter
 from organize_util import loading_animation, render_screen_main
 import os
@@ -18,7 +18,7 @@ def main():
     OPT Input : """)
         print()
 
-        if user_input not in ("0","1","2","3","4","5"):
+        if user_input not in ("0","1","2","3","4","5","6"):
             print("Invalid Option Selected....")
 
         if user_input == "0":
@@ -40,6 +40,9 @@ def main():
 
         elif user_input == "5":
             process_directory_main()
+
+        elif user_input == "6":
+            zip_main()
 
         print()
         input("Press Enter to Continue...")

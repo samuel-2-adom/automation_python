@@ -57,6 +57,7 @@ def render_screen_main():
     " [yellow][3][/yellow]  [cyan]Rename[/cyan] ✏️",
     " [yellow][4][/yellow]  [cyan]Trash[/cyan] 🗑️",
     " [yellow][5][/yellow]  [cyan]Parser[/cyan] 🧩",
+    " [yellow][6][/yellow]  [cyan]Zip/Unzip[/cyan] 📦",
 
 )
     
@@ -285,10 +286,52 @@ def render_screen_parse():
     console.print(Rule(f"[bold {accent_color}] MAIN CONTRO PANEL ", style=accent_color))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+def render_screen_zip():
+
+    header_color = "bright_magenta"
+    box_color = "gold"
+    accent_color = "bright_green"
+    
+    console.clear()
+
+    #***********************************************
+
+    menu = Group(
+    " [yellow][0][/yellow] 🏃 [cyan]Exit Zip/Unzip[/cyan]",
+
+    Rule(style="bold"),  # 👈 now goes edge-to-edge
+
+    " [yellow][1][/yellow]  [cyan]Zip File[/cyan] 📦",
+    " [yellow][2][/yellow]  [cyan]Zip Selected File(s) (Name/Ext)[/cyan] 🏷️",
+    " [yellow][3][/yellow]  [cyan]Unzip Path[/cyan] 📂",
+
+)
+    
+    console.print(
+    Padding(
+        Panel(
+            menu,
+            border_style="cyan",
+            title="[bold]ZIP/UNZIP OPTIONS",
+            title_align="left",
+            expand=True,
+            padding=(0, 0)  # 👈 removes inner padding completely
+        ),
+        (1, 4)
+    )
+)
+    #**************************************************
+
+    console.print(f"[bold yellow]log :[/bold yellow] [bold cyan]{format()}")
+    console.print()
+    console.print(Rule(f"[bold {accent_color}] MAIN CONTRO PANEL ", style=accent_color))
+
 if __name__ == "__main__":
     render_screen_main()
     print()
     render_screen_copy()
+    print()
+    render_screen_zip()
     print()
     render_screen_move()
     print()
