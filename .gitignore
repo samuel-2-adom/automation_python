@@ -1,4 +1,6 @@
 organize_files.log
+api_client.log
+.env
 __pycache__/
 *.pyc
 myzip.zip
