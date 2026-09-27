@@ -8,6 +8,9 @@ load_dotenv()  # Load environment variables from .env file
 
 logger = setup_logger(__name__)
 
+openweather = os.environ["OPENWEATHER_API_KEY"]
+weatherapi = os.environ["WEATHERAPI_API_KEY"]
+
 def weather_emoji(description):
     d = description.lower()
 
@@ -25,8 +28,15 @@ def weather_emoji(description):
         return "🌫️"
     return "🌤️"
 
+def forcast_weatherapi(city):
+    base = f"http://api.weatherapi.com/v1/forecast.json"
+    params = {"key" : weatherapi, "q" : city, "days" : 1, "aqi" : "no", "alerts" : "no"}
+    response = requests.get(base,params=params,timeout = (10,30))
+    return response.json()
+
+    
 def build(id,data):
-    if id == '1':
+    if id == 'openweather':
         emoji = weather_emoji(data["weather"][0].get("description"))
         print()
         print(f"{emoji}  Weather in {data.get("name")}, {data["sys"].get("country")}")
@@ -34,9 +44,29 @@ def build(id,data):
         print(f"Temperature : {data["main"].get("temp")}°C (feels like {data["main"].get("feels_like")}°C)")
         print(f"Condition   : {data["weather"][0].get("description")}")
         print(f"Humidity    : {data["main"].get("humidity")}%")
-        print(f"Wind        : {data["wind"].get("speed")} m/s")
+        print(f"Wind        : {data["wind"].get("speed")} m/h")
         print(f"Visibility  : {data.get("visibility")//1000} km")
         print()
+
+    elif id == "weatherapi":
+        emoji = weather_emoji(data["current"]["condition"].get("text"))
+        print()
+        print(f"{emoji}  Weather in {data["location"].get("name")}, {data["location"].get("country")}")
+        print("———"*12)
+        print(f"Temperature    : {data["current"].get("temp_c")}°C (feels like {data["current"].get("feelslike_c")}°C)")
+        print(f"Condition      : {data["current"]["condition"].get("text")}")
+        print(f"Humidity       : {data["current"].get("humidity")}%")
+        print(f"Wind           : {data["current"].get("wind_mph")} m/h")
+        print(f"Wind dir       : {data["current"].get("wind_dir")}")
+        print(f"Visibility     : {data["current"].get("vis_km")} km")
+        print(f"Local Time     : {data["location"].get("localtime")}")
+        print(f"Chance of rain : {data["current"].get("chance_of_rain")}%")
+        print(f"Chance of snow : {data["current"].get("chance_of_snow")}%")
+        print()
+
+    elif id == "forcast":
+        pass
+
 
 def display(data):
     print("Did you mean one of these??...")
@@ -58,17 +88,15 @@ def similar(data):
             similar(data)
 
 def get_weather_openweather():
-    api = os.environ["OPENWEATHER_API_KEY"]
-
     while True:
         city = input("Enter the city name: ")
-
         print()
+
         base = f"http://api.openweathermap.org/geo/1.0/direct"
 
         # Get city lon & lat
-        params = {"q" : city, "limit": 5, "appid": api}
-        response = requests.get(base,params = params)
+        params = {"q" : city, "limit": 5, "appid": openweather}
+        response = requests.get(base,params = params,timeout = (10,30))
         response.raise_for_status()
         info = response.json()
 
@@ -77,10 +105,9 @@ def get_weather_openweather():
             print()
             continue_search = input("Do you want to continue searching? (y/n): ")
             if continue_search.lower() != "y":
-                break
-            else:
                 print()
-                continue
+                break
+            continue
 
         if len(info) == 1:
             for i in info:       
@@ -95,31 +122,53 @@ def get_weather_openweather():
             
         # Get city current weather
         current_base = "https://api.openweathermap.org/data/2.5/weather"
-        current_params = {"lat": lat, "lon": lon, "units": "metric", "appid": api}
-        current_response = requests.get(current_base, params=current_params)
+        current_params = {"lat": lat, "lon": lon, "units": "metric", "appid": openweather}
+        current_response = requests.get(current_base, params=current_params,timeout = (10,30))
         current_response.raise_for_status()
         current_data = current_response.json()
-
+        
         logger.info("Fetching weather data...")
         print()
-        build("1",current_data)
+        build("openweather",current_data)
 
         continue_search = input("Do you want to continue searching? (y/n): ")
         if continue_search.lower() != "y":
+            print()
             break
         print()
 
+def get_weather_weatherapi(): 
+    while True:
+        city = input("Enter the city name: ")
 
+        base = "http://api.weatherapi.com/v1/current.json"
+        params = {"q" : city, "key" : weatherapi, "aqi" : "no"}
+        response = requests.get(base,params=params,timeout = (10,30))
+        response.raise_for_status()
+        data = response.json()
 
-def get_weather_weatherapi():
-    api = os.environ["WEATHERAPI_API_KEY"]
-    city = input("Enter the city name: ")
-    logger.info("Fetching weather data...")
+        if not data:
+            logger.error("City not found... Please check the spelling and try again.")
+            print()
+            continue_search = input("Do you want to continue searching? (y/n): ")
+            if continue_search.lower() != "y":
+                print()
+                break
+            continue
+        print()
+        logger.info("Fetching weather data...")
+        build("weatherapi",data)
+        print()
 
-    base = "http://api.weatherapi.com/v1/search.json"
-    params = {"q" : city, "key" : api}
-    response = requests.get(base,params=params)
-    print(response.json())
+        cast = forcast_weatherapi(city)
+        build("forcast",cast)
+
+        continue_search = input("Do you want to continue searching? (y/n): ")
+        if continue_search.lower() != "y":
+            print()
+            break
+        print()
 
 get_weather_weatherapi()
 
+get_weather_openweather()
