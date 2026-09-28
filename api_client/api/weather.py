@@ -1,7 +1,9 @@
 from .setup_logger import setup_logger
+from .render_screen import render
 import os
 from dotenv import load_dotenv
 import requests
+import platform
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -9,6 +11,10 @@ logger = setup_logger(__name__)
 
 openweather = os.environ["OPENWEATHER_API_KEY"]
 weatherapi = os.environ["WEATHERAPI_API_KEY"]
+
+def clear_screen():
+    command = 'cls' if platform.system() == 'Windows' else 'clear'
+    os.system(command)
 
 def weather_emoji(description):
     d = description.lower()
@@ -79,7 +85,7 @@ def build(id,data):
             print(f"{emoji}  {i["time"]} | {i["temp_c"]}% (feels like {i["feelslike_c"]})% |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
 
         print()
-        tomorrow_cast = input("Get Tomorrows Forcast [Y/n] : ")
+        tomorrow_cast = input("Get Tomorrows Forcast [y/N] : ")
         print()
         if tomorrow_cast.strip().lower() in ("y", "yes"):
             print(" ———"*5)
@@ -119,7 +125,9 @@ def similar(data):
 
 def get_weather_openweather():
     while True:
-        city = input("Enter the city name: ")
+        city = input("Enter the city name [London]: ")
+        if not city:
+            city = "London"
         print()
 
         base = f"http://api.openweathermap.org/geo/1.0/direct"
@@ -201,12 +209,13 @@ def get_weather_weatherapi():
         print()
 
 def weather_main():
-    while True:
+        clear_screen()
+        render("Weather Main")
         try:
             get_weather_weatherapi()
-        except requests.exceptions.HTTPError as e:
+        except requests.exceptions.HTTPError:
             print()
-            logger.error(f"HTTPError : [{e}] - Switching API")
+            logger.error(f"HTTPError - Switching API")
             print()
             get_weather_openweather()
         except requests.exceptions.RequestException as e:

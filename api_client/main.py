@@ -1,14 +1,27 @@
 from api import weather_main, setup_logger
+from api import render_screen_weather
+import platform
+import os
 
 logger = setup_logger(__name__)
 
-user_input = input("""
-[1] Current Weather / Forcast
-[2] Excahange Rate
-[3] Github
+def clear_screen():
+    command = 'cls' if platform.system() == 'Windows' else 'clear'
+    os.system(command)
 
-    OPT Input : """)
+def main():
+    while True:
+        clear_screen()
+        render_screen_weather()
 
-if user_input == "1":
-    logger.info("...Starting Weather...")
-    weather_main()
+        user_input = input("""
+
+            OPT Input : """)
+        print()
+
+        if user_input == "1":
+            logger.info("...Starting Weather...")
+            print()
+            weather_main()
+
+main()
