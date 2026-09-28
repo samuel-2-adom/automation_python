@@ -1,5 +1,4 @@
-from setup_logger import setup_logger
-from time import sleep
+from .setup_logger import setup_logger
 import os
 from dotenv import load_dotenv
 import requests
@@ -30,8 +29,9 @@ def weather_emoji(description):
 
 def forcast_weatherapi(city):
     base = f"http://api.weatherapi.com/v1/forecast.json"
-    params = {"key" : weatherapi, "q" : city, "days" : 1, "aqi" : "no", "alerts" : "no"}
+    params = {"key" : weatherapi, "q" : city, "days" : 2, "aqi" : "no", "alerts" : "no"}
     response = requests.get(base,params=params,timeout = (10,30))
+    response.raise_for_status()
     return response.json()
 
     
@@ -65,7 +65,37 @@ def build(id,data):
         print()
 
     elif id == "forcast":
-        pass
+        print()
+        print(" ———"*5)
+        print(" | Today's Forcast |")
+        print(" ———"*5)
+        print()
+        print("     Day/Hour       |       Temperature        | (Rain / Snow) | Condtion")
+        print("———"*30)
+        forecast = data["forecast"].get("forecastday")
+        hour = forecast[0].get("hour")
+        for i in hour:
+            emoji = weather_emoji(i["condition"].get("text"))
+            print(f"{emoji}  {i["time"]} | {i["temp_c"]}% (feels like {i["feelslike_c"]})% |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
+
+        print()
+        tomorrow_cast = input("Get Tomorrows Forcast [Y/n] : ")
+        print()
+        if tomorrow_cast.strip().lower() in ("y", "yes"):
+            print(" ———"*5)
+            print("| Tommorow's Forcast |")
+            print(" ———"*5)
+            print()
+            print("     Day/Hour       |       Temperature        | (Rain / Snow) | Condtion")
+            print("———"*30)
+            forecast = data["forecast"].get("forecastday")
+            hour = forecast[1].get("hour")
+            for i in hour:
+                emoji = weather_emoji(i["condition"].get("text"))
+                print(f"{emoji}  {i["time"]} | {i["temp_c"]}% (feels like {i["feelslike_c"]})% |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
+            print()
+        else:
+            print()
 
 
 def display(data):
@@ -84,7 +114,7 @@ def similar(data):
     if not f:
         print()
         try_again = input("Invalid OPT. Try Again [Y/n] : ").lower()
-        if try_again == "y":
+        if try_again.strip().lower() in ("y", "yes"):
             similar(data)
 
 def get_weather_openweather():
@@ -103,8 +133,8 @@ def get_weather_openweather():
         if not info:
             logger.error("City not found... Please check the spelling and try again.")
             print()
-            continue_search = input("Do you want to continue searching? (y/n): ")
-            if continue_search.lower() != "y":
+            continue_search = input("Do you want to continue searching? (y/N): ")
+            if continue_search.strip().lower() not in ("y", "yes"):
                 print()
                 break
             continue
@@ -131,8 +161,8 @@ def get_weather_openweather():
         print()
         build("openweather",current_data)
 
-        continue_search = input("Do you want to continue searching? (y/n): ")
-        if continue_search.lower() != "y":
+        continue_search = input("Do you want to continue searching? (y/N): ")
+        if continue_search.strip().lower() not in ("y", "yes"):
             print()
             break
         print()
@@ -150,8 +180,8 @@ def get_weather_weatherapi():
         if not data:
             logger.error("City not found... Please check the spelling and try again.")
             print()
-            continue_search = input("Do you want to continue searching? (y/n): ")
-            if continue_search.lower() != "y":
+            continue_search = input("Do you want to continue searching? (y/N): ")
+            if continue_search.strip().lower() not in ("y", "yes"):
                 print()
                 break
             continue
@@ -160,15 +190,29 @@ def get_weather_weatherapi():
         build("weatherapi",data)
         print()
 
+        logger.info("Getting Forcast....")
         cast = forcast_weatherapi(city)
         build("forcast",cast)
 
-        continue_search = input("Do you want to continue searching? (y/n): ")
-        if continue_search.lower() != "y":
+        continue_search = input("Do you want to continue searching? (y/N): ")
+        if continue_search.strip().lower() not in ("y", "yes"):
             print()
             break
         print()
 
-get_weather_weatherapi()
+def weather_main():
+    while True:
+        try:
+            get_weather_weatherapi()
+        except requests.exceptions.HTTPError as e:
+            print()
+            logger.error(f"HTTPError : [{e}] - Switching API")
+            print()
+            get_weather_openweather()
+        except requests.exceptions.RequestException as e:
+            print(f"An exception Occured : [{e}]")
+    
 
-get_weather_openweather()
+if __name__ == "__main__":
+    get_weather_weatherapi()
+    get_weather_openweather()
