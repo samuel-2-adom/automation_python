@@ -1,5 +1,4 @@
-from api import weather_main, setup_logger
-from api import render_screen_weather
+from api import weather_main, setup_logger, render_screen, rate_main
 import platform
 import os
 
@@ -12,16 +11,26 @@ def clear_screen():
 def main():
     while True:
         clear_screen()
-        render_screen_weather()
+        render_screen()
 
         user_input = input("""
 
             OPT Input : """)
         print()
 
+        if user_input not in ("1","2","3"):
+            continue
+        
         if user_input == "1":
-            logger.info("...Starting Weather...")
             print()
             weather_main()
+
+        elif user_input == "2":
+            print()
+            rate_main()
+
+        elif user_input == "3":
+            print()
+            logger.info(".....In Progress.....")
 
 main()

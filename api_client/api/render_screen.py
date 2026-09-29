@@ -19,7 +19,7 @@ def format():
 
 
 # Rich UI design for the CLI interface
-def render_screen_weather():
+def render_screen():
     title = "    ⚡ MY TOOL "
     subtitle = "API_CLIENT CLI Interface"
     
@@ -105,7 +105,66 @@ def render(sub):
     console.print()
     console.print(Rule(f"[bold {accent_color}] MAIN CONTRO PANEL ", style=accent_color))
 
+def render_screen_rate(sub):
+    header_color = "bright_magenta"
+    box_color = "gold"
+    accent_color = "bright_green"
+    
+    console.clear()
+
+    menu = Group(
+        f" [cyan]{sub} 👈[/cyan]",
+    )
+        
+    console.print(
+    Padding(
+        Panel(
+            menu,
+            border_style="cyan",
+            title="",
+            title_align="center",
+            expand=True,
+            padding=(0, 0)  # 👈 removes inner padding completely
+        ),
+        (1, 4)
+    )
+)
+
+    #***********************************************
+
+    menu = Group(
+    " [yellow][0][/yellow] 🏃 [cyan]Exit Copy[/cyan]",
+
+    Rule(style="bold"),  # 👈 now goes edge-to-edge
+
+    " [yellow][1][/yellow]  [cyan]All Rate[/cyan] 📊",
+    " [yellow][2][/yellow]  [cyan]Rate Conversion[/cyan] ✨",
+
+)
+    
+    console.print(
+    Padding(
+        Panel(
+            menu,
+            border_style="cyan",
+            title="[bold]MENU OPTIONS",
+            title_align="left",
+            expand=True,
+            padding=(0, 0)  # 👈 removes inner padding completely
+        ),
+        (1, 4)
+    )
+)
+    #**************************************************
+
+    console.print(f"[bold yellow]log :[/bold yellow] [bold cyan]{format()}")
+    console.print()
+    console.print(Rule(f"[bold {accent_color}] MAIN CONTRO PANEL ", style=accent_color))
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 if __name__ == "__main__":
-    render_screen_weather()
+    render_screen()
 
     render("Weather Main") 
+
+    render_screen_rate("ExchangeRate Main")

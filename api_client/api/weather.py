@@ -76,13 +76,13 @@ def build(id,data):
         print(" | Today's Forcast |")
         print(" ———"*5)
         print()
-        print("     Day/Hour       |       Temperature        | (Rain / Snow) | Condtion")
+        print("     Day/Hour       |       Temperature          | (Rain / Snow) | Condtion")
         print("———"*30)
         forecast = data["forecast"].get("forecastday")
         hour = forecast[0].get("hour")
         for i in hour:
             emoji = weather_emoji(i["condition"].get("text"))
-            print(f"{emoji}  {i["time"]} | {i["temp_c"]}% (feels like {i["feelslike_c"]})% |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
+            print(f"{emoji}  {i["time"]} | {i["temp_c"]}°C (feels like {i["feelslike_c"]})°C |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
 
         print()
         tomorrow_cast = input("Get Tomorrows Forcast [y/N] : ")
@@ -92,13 +92,13 @@ def build(id,data):
             print("| Tommorow's Forcast |")
             print(" ———"*5)
             print()
-            print("     Day/Hour       |       Temperature        | (Rain / Snow) | Condtion")
+            print("     Day/Hour       |       Temperature          | (Rain / Snow) | Condtion")
             print("———"*30)
             forecast = data["forecast"].get("forecastday")
             hour = forecast[1].get("hour")
             for i in hour:
                 emoji = weather_emoji(i["condition"].get("text"))
-                print(f"{emoji}  {i["time"]} | {i["temp_c"]}% (feels like {i["feelslike_c"]})% |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
+                print(f"{emoji}  {i["time"]} | {i["temp_c"]}°C (feels like {i["feelslike_c"]})°C |   {i["chance_of_rain"]}% / {i["chance_of_snow"]}%    | {i["condition"].get("text")}")
             print()
         else:
             print()
@@ -212,6 +212,8 @@ def weather_main():
         clear_screen()
         render("Weather Main")
         try:
+            logger.info("...Starting Weather...")
+            print()
             get_weather_weatherapi()
         except requests.exceptions.HTTPError:
             print()
