@@ -32,5 +32,7 @@ def main():
         elif user_input == "3":
             print()
             logger.info(".....In Progress.....")
+            print()
+            input("Enter to Continue : ")
 
 main()
