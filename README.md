@@ -1,136 +1,102 @@
-# 🛠️ Automation — Python CLI Tools
+# Automation Python
 
-This repository is intentionally structured to host multiple small command-line tools (each a mini-project) under a single repo.
+This repository contains a small collection of Python automation and CLI utilities built for learning, experimentation, and practical file/API workflows.
 
----
+The project currently includes two main mini-apps:
 
-## 📚 What you'll learn
-
-- CLI argument parsing and interactive menus
-- Working with packages, modules, and imports in Python
-- File I/O and filesystem operations (copy, move, rename, trash)
-- Writing small, testable utilities (parsers, status checks)
-- Unit testing with pytest and using tmp_path/monkeypatch for filesystem tests
-- Basic terminal UI patterns (loading animations, simple renderers)
+- `files_organizer`: a menu-driven file management tool for copying, moving, renaming, trashing, processing directories, and zipping files.
+- `api_client`: a terminal-based API client for weather, rate limits, and GitHub data access.
 
 ---
 
-## 🧰 Projects included
+## Repository structure
 
-This repo is designed to contain multiple small automation CLI tools. Right now it includes:
-
-- files_organizer — a menu-driven file organizer (copy / move / rename / trash / process-directory)
-
-Future mini-projects can be added as sibling folders at the top level.
-
----
-
-## 📁 Project structure (recommended)
-
-```
+```text
 automation_python/
-├── README.md                  # This file
-├── files_organizer/           # First mini-project (file organizer)
-│   ├── organize_cli.py        # interactive entrypoint (run from inside this folder)
-│   ├── commands/              # command implementations (copy, move, rename, trash, ...)
-│   └── organize_util/         # shared helpers (parsers, renderers, logger)
-├── tests/                     # unified test suite for all mini-projects (pytest)
-└── .gitignore
+├── .gitignore
+├── README.md
+├── api_client/
+│   ├── main.py
+│   └── api/
+│       ├── __init__.py
+│       ├── github.py
+│       ├── rate.py
+│       ├── render_screen.py
+│       ├── setup_logger.py
+│       └── weather.py
+├── files_organizer/
+│   ├── organize_cli.py
+│   ├── commands/
+│   │   ├── __init__.py
+│   │   ├── copy.py
+│   │   ├── move.py
+│   │   ├── rename.py
+│   │   ├── process_directory.py
+│   │   ├── trash.py
+│   │   └── zip_unzip_path.py
+│   └── organize_util/
+│       ├── __init__.py
+│       ├── check_status.py
+│       ├── formatter.py
+│       ├── loading_animation.py
+│       ├── parser.py
+│       ├── patterns.py
+│       ├── render_screen.py
+│       └── setup_logger.py
+└── tests/   # optional test folder for future coverage
 ```
-
-Each mini-project should follow the same internal layout (an entry script plus modular code under subpackages) so tests and CI can be shared.
 
 ---
 
-## 🚀 Quick start — run the file organizer (recommended)
+## Project overview
 
-I recommend the simple workflow you chose while learning packages and imports: change into the package folder and execute the script so the local imports resolve naturally.
+### 1) files_organizer
+
+This tool provides a command-line menu to organize files and folders quickly from the terminal. Supported actions include:
+
+- copy files
+- move files
+- rename files
+- delete or trash files
+- process whole directories
+- zip/unzip-related path actions
+
+Run it from inside the project folder:
 
 ```bash
-git clone https://github.com/samuel-2-adom/automation_python.git
 cd automation_python/files_organizer
 python organize_cli.py
 ```
 
-Notes:
-- The project currently uses local imports like `from commands import copy` so running from inside `files_organizer` makes those imports resolve.
-- If you later want to run from repo root or install the package, convert `files_organizer` into a package (add `files_organizer/__init__.py`) and switch to package imports — instructions below.
+The code relies on local imports such as `from commands import ...` and `from organize_util import ...`, so executing the script from inside `files_organizer` is the recommended workflow.
 
----
+### 2) api_client
 
-## 🧪 Tests
+This app is a terminal interface for requesting external API data. It currently includes access to:
 
-This repo uses a single test suite for all mini-projects to keep things simple.
+- weather data
+- rate-limit information
+- GitHub data
 
-Suggested layout:
-
-```
-tests/
-  test_parser.py
-  test_check_status.py
-  test_copy_selected.py
-```
-
-Run tests locally:
+Run it from inside the project folder:
 
 ```bash
-pip install -U pytest
-pytest -q
+git clone https://github.com/samuel-2-adom/automation_python.git
+cd automation_python/api_client
+python main.py
 ```
 
-Testing tips:
-- Unit-test deterministic helpers in `files_organizer/organize_util` first (parser, patterns, check_status).
-- For filesystem-affecting code, use `tmp_path` and `monkeypatch` to create temporary trees and avoid modifying real files.
-- Keep integration tests short (e.g., verify that `copy_selected` copies expected files within a temp directory).
+This project uses local imports such as `from api import ...`, so it should also be launched from inside `api_client`.
 
 ---
 
-## ⚙️ Make a mini-project importable (optional)
+## Prerequisites
 
-If you later want to run a tool from the repository root or with `python -m`, convert a mini-project into a real package:
-
-1. Add `files_organizer/__init__.py`.
-2. Change imports to use the package name (example):
-   - `from files_organizer.commands import copy` instead of `from commands import copy`
-3. Run via:
-
-```bash
-python -m files_organizer.organize_cli
-```
-
-This is optional — the `cd`-into-folder pattern is fine for learning and small experiments.
-
----
-
-## 🔧 How to add a new mini-project
-
-1. Create a new top-level folder, e.g. `auto_rename/`.
-2. Add an entry script (one-line menu) and modularize logic under subpackages (commands/ or lib/).
-3. Add tests in `tests/` that cover utilities and small integration scenarios.
-4. Add a short section to this README under "Projects included".
-
-Suggested checklist for each new mini-project:
-- [ ] Has a single interactive entrypoint or single CLI file
-- [ ] Exposes small testable functions (avoid large monolithic scripts)
-- [ ] Includes a brief README/usage snippet inside the folder
-- [ ] Adds unit tests to the shared `tests/` folder
-
----
-
-## 🛠 Built with
-
-- Python 3.x (standard library: os, shutil, pathlib)
-- pytest for tests
-- Optional: rich for nicer terminal UIs
-
----
-
-## 📝 Prerequisites
-
-- Python 3.8+ (3.10+ recommended)
+- Python 3.8+
 - pip
+- internet access for API calls
 
-Check Python version:
+Check your Python version:
 
 ```bash
 python --version
@@ -138,41 +104,63 @@ python --version
 
 ---
 
-## 🧭 Example usage (files_organizer)
+## Quick start
 
-After running `python organize_cli.py` inside `files_organizer`, choose menu options to copy, move, rename, or trash files. Example: choose option `1` to enter the copy submenu and follow prompts.
-
-Quick import test while inside `files_organizer`:
+### File organizer
 
 ```bash
-python -c "from commands.copy import copy; print(copy.__name__)"
+cd automation_python/files_organizer
+python organize_cli.py
+```
+
+### API client
+
+```bash
+cd automation_python/api_client
+python main.py
 ```
 
 ---
 
-## 📦 CI & automation (suggestion)
+## Learning goals
 
-When you're ready, add a simple GitHub Actions workflow that runs `pytest` on push and PR. Keep one job that sets up Python and runs `pytest`. Add the badge to this README so test status is visible.
+This repository demonstrates several Python concepts:
 
----
-
-## 🤝 Contributing
-
-Contributions welcome — follow these steps:
-1. Fork the repo
-2. Create a feature branch
-3. Add tests for new behavior
-4. Open a PR
+- CLI menu design and interactive user input
+- file and directory manipulation with `os`, `shutil`, and `pathlib`
+- modular project organization using packages and subfolders
+- API requests and JSON parsing
+- terminal UI patterns, loading animations, and formatted output
+- small, real-world automation scripts in a single repo
 
 ---
 
-## 📄 License
+## Suggested next steps
 
-MIT © Samuel Adom
+- Add tests under a top-level `tests/` directory for both mini-projects.
+- Convert the project folders into installable packages if you want to run them from the repo root.
+- Add a GitHub Actions workflow to run automated checks on push and pull requests.
+- Expand each project with additional commands or API integrations.
 
 ---
 
-## ✉️ Contact
+## Contributing
+
+Contributions are welcome. If you want to improve a tool:
+
+1. Create a feature branch.
+2. Add or update tests where possible.
+3. Keep functions modular and focused.
+4. Open a pull request with a short explanation of the change.
+
+---
+
+## License
+
+MIT
+
+---
+
+## Contact
 
 - GitHub: @samuel-2-adom
-
