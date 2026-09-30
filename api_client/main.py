@@ -1,4 +1,4 @@
-from api import weather_main, setup_logger, render_screen, rate_main
+from api import weather_main, setup_logger, render_screen, rate_main, github_main
 import platform
 import os
 
@@ -31,8 +31,7 @@ def main():
 
         elif user_input == "3":
             print()
-            logger.info(".....In Progress.....")
-            print()
-            input("Enter to Continue : ")
+            github_main()
 
-main()
+if __name__ == "__main__":
+    main()

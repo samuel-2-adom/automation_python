@@ -201,6 +201,8 @@ def rate_main():
         if user_input == "0":
             print()
             logger.info("Exiting ExchangeRate Main....")
+            print()
+            input("Enter to continue...")
             break
 
         elif user_input == "1":

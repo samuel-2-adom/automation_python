@@ -205,6 +205,7 @@ def get_weather_weatherapi():
         continue_search = input("Do you want to continue searching? (y/N): ")
         if continue_search.strip().lower() not in ("y", "yes"):
             print()
+            logger.info("Exiting Weather Main")
             break
         print()
 
