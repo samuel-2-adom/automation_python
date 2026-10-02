@@ -41,7 +41,7 @@ from files_organizer.commands import (
     zip_file,
     zip_main,
 )
-from api import github_main, weather_main, rate_main
+from api_client.api import github_main, weather_main, rate_main
 
 
 class TestFilesOrganizerUtilities(unittest.TestCase):
@@ -236,7 +236,7 @@ class TestImportIntegrity(unittest.TestCase):
             # This test already passed if we got here, but being explicit helps
             from files_organizer.organize_util import check_f_status
             from files_organizer.commands import copy
-            from api import github_main
+            from api_client.api import github_main
         except ImportError as e:
             self.fail(f"Import failed: {e}")
 
